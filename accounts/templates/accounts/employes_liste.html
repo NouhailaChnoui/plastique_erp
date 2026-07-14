@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Employés{% endblock %}
+{% block page_title %}{% trans "Gestion des employés" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <div></div>
+  <a href="{% url 'accounts:employe_creer' %}" class="btn btn-primary">
+    <i class="fa-solid fa-plus me-1"></i> Nouvel employé
+  </a>
+</div>
+
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead>
+      <tr>
+        <th>{% trans "Utilisateur" %}</th><th>{% trans "Nom complet" %}</th><th>{% trans "Rôle" %}</th><th>{% trans "Téléphone" %}</th><th>{% trans "Statut" %}</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in employes %}
+      <tr>
+        <td class="fw-semibold">{{ e.username }}</td>
+        <td>{{ e.get_full_name|default:"—" }}</td>
+        <td>{% if e.is_admin %}<span class="badge-statut badge-paye">{% trans "Administrateur" %}</span>{% else %}<span class="badge-statut badge-attente">{% trans "Employé" %}</span>{% endif %}</td>
+        <td>{{ e.telephone|default:"—" }}</td>
+        <td>{% if e.is_active %}<span class="badge-statut badge-paye">{% trans "Actif" %}</span>{% else %}<span class="badge-statut badge-non-paye">{% trans "Désactivé" %}</span>{% endif %}</td>
+        <td class="text-end">
+          {% if e != request.user %}
+          <form method="post" action="{% url 'accounts:employe_toggle' e.pk %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-secondary">{% if e.is_active %}Désactiver{% else %}Activer{% endif %}</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-secondary py-4">{% trans "Aucun employé." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

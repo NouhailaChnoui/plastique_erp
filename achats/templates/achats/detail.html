@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{% blocktrans with numero=achat.numero_bon %}Achat {{ numero }}{% endblocktrans %}{% endblock %}
+{% block content %}
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-label">{% trans "Montant total" %}</div><div class="kpi-value">{{ achat.montant_total|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Montant payé" %}</div><div class="kpi-value">{{ achat.montant_paye|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Reste à payer" %}</div><div class="kpi-value">{{ achat.reste_a_payer|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Statut" %}</div><div class="kpi-value"><span class="badge-statut badge-{{ achat.statut_paiement_css }}">{{ achat.statut_paiement }}</span></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="panel h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="panel-title mb-0">{% trans "Détails de l'achat" %}</div>
+        <a href="{% url 'achats:facture_pdf' achat.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-pdf me-1"></i>Facture PDF</a>
+      </div>
+      <table class="table-erp mb-0">
+        <tr><td class="text-secondary">Fournisseur</td><td class="fw-semibold"><a href="{% url 'partenaires:fournisseur_detail' achat.fournisseur.pk %}">{{ achat.fournisseur }}</a></td></tr>
+        <tr><td class="text-secondary">Matière</td><td>{{ achat.materiau }}</td></tr>
+        <tr><td class="text-secondary">Quantité</td><td>{{ achat.quantite }} Kg</td></tr>
+        <tr><td class="text-secondary">Prix unitaire</td><td>{{ achat.prix_unitaire|floatformat:2 }} DH</td></tr>
+        <tr><td class="text-secondary">Date</td><td>{{ achat.date_achat }}</td></tr>
+        <tr><td class="text-secondary">N° bon</td><td>{{ achat.numero_bon }}</td></tr>
+        <tr><td class="text-secondary">N° facture</td><td>{{ achat.numero_facture }}</td></tr>
+        <tr><td class="text-secondary">Observations</td><td>{{ achat.observations|default:"—" }}</td></tr>
+      </table>
+      {% if achat.photo_bon %}
+      <a href="{{ achat.photo_bon.url }}" target="_blank" class="btn btn-outline-primary btn-sm mt-3"><i class="fa-solid fa-image me-1"></i> Voir le bon de pesée</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="panel h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="panel-title mb-0">{% trans "Paiements" %}</div>
+        <a href="{% url 'achats:paiement_creer' achat.pk %}" class="btn btn-sm btn-primary"><i class="fa-solid fa-plus me-1"></i>{% trans "Ajouter un paiement" %}</a>
+      </div>
+      {% for p in paiements %}
+      <div class="border rounded-3 p-3 mb-2">
+        <div class="d-flex justify-content-between">
+          <span class="fw-semibold">{{ p.get_mode_display }} — {{ p.montant_total|floatformat:2 }} DH</span>
+          <span class="text-secondary small">{{ p.date_paiement }}</span>
+        </div>
+        {% if p.cheques.all %}
+        <ul class="list-unstyled mt-2 mb-0 small">
+          {% for c in p.cheques.all %}
+          <li class="d-flex justify-content-between align-items-center border-top pt-2 mt-2">
+            <span>{% trans "Chèque" %} {{ c.numero }} — {{ c.banque }} — {{ c.montant|floatformat:2 }} DH ({% trans "échéance" %} {{ c.date_encaissement }})</span>
+            <span class="d-flex align-items-center gap-2">
+              <span class="badge-statut badge-{{ c.statut }}">{{ c.get_statut_display }}</span>
+              <span class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown"><i class="fa-solid fa-ellipsis"></i></button>
+                <span class="dropdown-menu dropdown-menu-end p-1">
+                  {% if c.statut != "encaisse" %}
+                  <form method="post" action="{% url 'achats:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="encaisse" class="dropdown-item small text-success"><i class="fa-solid fa-check me-1"></i>{% trans "Marquer encaissé" %}</button>
+                  </form>
+                  {% endif %}
+                  {% if c.statut != "attente" %}
+                  <form method="post" action="{% url 'achats:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="attente" class="dropdown-item small"><i class="fa-solid fa-rotate-left me-1"></i>{% trans "Remettre en attente" %}</button>
+                  </form>
+                  {% endif %}
+                  {% if c.statut != "annule" %}
+                  <form method="post" action="{% url 'achats:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="annule" class="dropdown-item small text-danger"><i class="fa-solid fa-ban me-1"></i>{% trans "Annuler le chèque" %}</button>
+                  </form>
+                  {% endif %}
+                </span>
+              </span>
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p class="text-secondary">{% trans "Aucun paiement enregistré pour cet achat." %}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

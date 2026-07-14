@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{{ titre }}{% endblock %}
+{% block page_title %}{{ titre }}{% endblock %}
+{% block content %}
+<div class="card-form mx-auto" style="max-width:720px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label">{% trans "Client" %}</label>{{ form.client }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Matière" %}</label>{{ form.materiau }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Quantité (Kg)" %}</label>{{ form.quantite }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Prix de vente (DH/Kg)" %}</label>{{ form.prix_unitaire }}</div>
+
+      <div class="col-12">
+        <div class="panel mb-0 py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-secondary">{% trans "Montant total (calcul automatique)" %}</span>
+            <span id="montant-calcule" class="fs-5 fw-bold text-primary">0,00 DH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6"><label class="form-label">{% trans "Date de vente" %}</label>{{ form.date_vente }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "N° du bon" %}</label>{{ form.numero_bon }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Photo du bon de pesée" %}</label>{{ form.photo_bon }}</div>
+      <div class="col-12"><label class="form-label">{% trans "Observations" %}</label>{{ form.observations }}</div>
+    </div>
+
+    {% for field in form %}{% if field.errors %}<div class="text-danger small mt-1">{{ field.label }}: {{ field.errors|join:", " }}</div>{% endif %}{% endfor %}
+
+    <p class="text-secondary small mt-3"><i class="fa-solid fa-circle-info me-1"></i>Une facture PDF sera générée automatiquement après l'enregistrement.</p>
+
+    <div class="d-flex justify-content-end gap-2 mt-2">
+      <a href="{% url 'ventes:liste' %}" class="btn btn-outline-secondary">{% trans "Annuler" %}</a>
+      <button class="btn btn-primary">{% trans "Enregistrer la vente" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

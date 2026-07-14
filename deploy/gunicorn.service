@@ -1,0 +1,21 @@
+[Unit]
+Description=Gunicorn - Plastique ERP (Django)
+After=network.target
+
+[Service]
+# Adaptez ce chemin à l'emplacement réel du projet sur le VPS
+WorkingDirectory=/home/django/plastique_erp
+ExecStart=/home/django/plastique_erp/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/home/django/plastique_erp/plastique_erp.sock \
+    config.wsgi:application
+
+# Remplacez "django" par l'utilisateur système que vous utilisez sur le VPS
+User=django
+Group=www-data
+
+Restart=on-failure
+EnvironmentFile=/home/django/plastique_erp/.env
+
+[Install]
+WantedBy=multi-user.target

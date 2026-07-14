@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{% blocktrans with numero=vente.numero_facture %}Paiement — Vente {{ numero }}{% endblocktrans %}{% endblock %}
+{% block content %}
+<div class="card-form mx-auto" style="max-width:760px;">
+  <p class="text-secondary">{% trans "Reste à recevoir" %} : <strong>{{ vente.reste_a_recevoir|floatformat:2 }} DH</strong></p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row g-3 mb-3">
+      <div class="col-md-4"><label class="form-label">{% trans "Mode de paiement" %}</label>{{ form.mode }}</div>
+      <div class="col-md-4"><label class="form-label">{% trans "Montant espèces" %}</label>{{ form.montant_especes }}</div>
+      <div class="col-md-4"><label class="form-label">{% trans "Date de paiement" %}</label>{{ form.date_paiement }}</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">{% trans "Chèques (si mode Chèque ou Mixte)" %}</div>
+      {{ formset.management_form }}
+      <div id="cheques-container">
+        {% for cform in formset %}
+        <div class="row g-2 align-items-center mb-2 border-bottom pb-2">
+          <div class="col-md-2">{{ cform.numero }}</div>
+          <div class="col-md-2">{{ cform.banque }}</div>
+          <div class="col-md-2">{{ cform.montant }}</div>
+          <div class="col-md-2">{{ cform.date_encaissement }}</div>
+          <div class="col-md-2">{{ cform.photo }}</div>
+          <div class="col-md-1">{{ cform.statut }}</div>
+          <div class="col-md-1">{% if cform.DELETE %}{{ cform.DELETE }} Suppr.{% endif %}</div>
+          {{ cform.id }}
+        </div>
+        {% endfor %}
+      </div>
+      <p class="text-secondary small mb-0">{% trans "Laissez vide si le paiement est entièrement en espèces." %}</p>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <a href="{% url 'ventes:detail' vente.pk %}" class="btn btn-outline-secondary">{% trans "Annuler" %}</a>
+      <button class="btn btn-primary">{% trans "Enregistrer le paiement" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

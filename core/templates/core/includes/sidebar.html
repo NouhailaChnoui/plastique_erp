@@ -1,0 +1,73 @@
+{% load static i18n %}
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-mark"><i class="fa-solid fa-recycle"></i></div>
+        <div class="brand-text">
+            <span class="brand-name">{{ nom_entreprise }}</span>
+            <span class="brand-sub">{% trans "Gestion Matières Plastiques" %}</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">{% trans "Général" %}</div>
+        <a href="{% url 'dashboard:index' %}" class="nav-link {% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
+            <i class="fa-solid fa-gauge-high"></i><span>{% trans "Tableau de bord" %}</span>
+        </a>
+        <a href="{% url 'recherche:index' %}" class="nav-link {% if request.resolver_match.app_name == 'recherche' %}active{% endif %}">
+            <i class="fa-solid fa-magnifying-glass"></i><span>{% trans "Recherche globale" %}</span>
+        </a>
+
+        <div class="nav-section-label">{% trans "Opérations" %}</div>
+        <a href="{% url 'achats:liste' %}" class="nav-link {% if request.resolver_match.app_name == 'achats' %}active{% endif %}">
+            <i class="fa-solid fa-truck-ramp-box"></i><span>{% trans "Achats" %}</span>
+        </a>
+        <a href="{% url 'ventes:liste' %}" class="nav-link {% if request.resolver_match.app_name == 'ventes' %}active{% endif %}">
+            <i class="fa-solid fa-file-invoice-dollar"></i><span>{% trans "Ventes" %}</span>
+        </a>
+        <a href="{% url 'stock:liste' %}" class="nav-link {% if request.resolver_match.app_name == 'stock' %}active{% endif %}">
+            <i class="fa-solid fa-boxes-stacked"></i><span>{% trans "Stock" %}</span>
+        </a>
+        <a href="{% url 'matieres:liste' %}" class="nav-link {% if request.resolver_match.app_name == 'matieres' %}active{% endif %}">
+            <i class="fa-solid fa-flask"></i><span>{% trans "Matières" %}</span>
+        </a>
+
+        <div class="nav-section-label">{% trans "Chèques" %}</div>
+        <a href="{% url 'cheques:a_payer' %}" class="nav-link {% if request.resolver_match.url_name == 'a_payer' %}active{% endif %}">
+            <i class="fa-solid fa-money-check"></i><span>{% trans "Chèques à payer" %}</span>
+        </a>
+        <a href="{% url 'cheques:a_encaisser' %}" class="nav-link {% if request.resolver_match.url_name == 'a_encaisser' %}active{% endif %}">
+            <i class="fa-solid fa-money-check-dollar"></i><span>{% trans "Chèques à encaisser" %}</span>
+        </a>
+
+        <div class="nav-section-label">{% trans "Répertoire" %}</div>
+        <a href="{% url 'partenaires:clients_liste' %}" class="nav-link {% if request.resolver_match.url_name == 'clients_liste' or request.resolver_match.url_name == 'client_detail' %}active{% endif %}">
+            <i class="fa-solid fa-user-group"></i><span>{% trans "Clients" %}</span>
+        </a>
+        <a href="{% url 'partenaires:fournisseurs_liste' %}" class="nav-link {% if request.resolver_match.url_name == 'fournisseurs_liste' or request.resolver_match.url_name == 'fournisseur_detail' %}active{% endif %}">
+            <i class="fa-solid fa-industry"></i><span>{% trans "Fournisseurs" %}</span>
+        </a>
+
+        {% if request.user.is_admin %}
+        <div class="nav-section-label">{% trans "Administration" %}</div>
+        <a href="{% url 'exports:index' %}" class="nav-link {% if request.resolver_match.app_name == 'exports' %}active{% endif %}">
+            <i class="fa-solid fa-file-export"></i><span>{% trans "Exports" %}</span>
+        </a>
+        <a href="{% url 'accounts:employes_liste' %}" class="nav-link {% if request.resolver_match.url_name == 'employes_liste' %}active{% endif %}">
+            <i class="fa-solid fa-users-gear"></i><span>{% trans "Employés" %}</span>
+        </a>
+        <a href="/admin/" class="nav-link">
+            <i class="fa-solid fa-database"></i><span>Admin Django</span>
+        </a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-chip">
+            <div class="user-avatar">{{ request.user.username|slice:":1"|upper }}</div>
+            <div class="user-meta">
+                <span class="user-name">{{ request.user.get_full_name|default:request.user.username }}</span>
+                <span class="user-role">{% if request.user.is_admin %}{% trans "Administrateur" %}{% else %}{% trans "Employé" %}{% endif %}</span>
+            </div>
+        </div>
+    </div>
+</aside>

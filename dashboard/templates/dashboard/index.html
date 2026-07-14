@@ -1,0 +1,135 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Tableau de bord" %}{% endblock %}
+{% block page_title %}{% trans "Tableau de bord" %}{% endblock %}
+{% block content %}
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-blue"><i class="fa-solid fa-truck-ramp-box"></i></div>
+    <div class="kpi-label">{% trans "Achats aujourd'hui" %}</div>
+    <div class="kpi-value">{{ kpis.achats_aujourdhui|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-teal"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+    <div class="kpi-label">{% trans "Ventes aujourd'hui" %}</div>
+    <div class="kpi-value">{{ kpis.ventes_aujourdhui|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-blue"><i class="fa-solid fa-sack-dollar"></i></div>
+    <div class="kpi-label">{% trans "Chiffre d'affaires" %}</div>
+    <div class="kpi-value">{{ kpis.chiffre_affaires|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-amber"><i class="fa-solid fa-wallet"></i></div>
+    <div class="kpi-label">{% trans "Dépenses" %}</div>
+    <div class="kpi-value">{{ kpis.depenses|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon {% if kpis.profit >= 0 %}bg-icon-teal{% else %}bg-icon-red{% endif %}"><i class="fa-solid fa-chart-line"></i></div>
+    <div class="kpi-label">{% trans "Profit" %}</div>
+    <div class="kpi-value">{{ kpis.profit|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-blue"><i class="fa-solid fa-money-check"></i></div>
+    <div class="kpi-label">{% trans "Chèques en attente" %}</div>
+    <div class="kpi-value">{{ kpis.cheques_en_attente }} / {{ kpis.nb_cheques }}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-red"><i class="fa-solid fa-user-clock"></i></div>
+    <div class="kpi-label">{% trans "Créances clients" %}</div>
+    <div class="kpi-value">{{ kpis.creances_clients|floatformat:2 }} DH</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon bg-icon-amber"><i class="fa-solid fa-industry"></i></div>
+    <div class="kpi-label">{% trans "Dettes fournisseurs" %}</div>
+    <div class="kpi-value">{{ kpis.dettes_fournisseurs|floatformat:2 }} DH</div>
+  </div>
+</div>
+
+<div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total des achats" %}</div><div class="kpi-value">{{ kpis.nb_achats }}</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total des ventes" %}</div><div class="kpi-value">{{ kpis.nb_ventes }}</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Stock disponible" %}</div><div class="kpi-value">{{ kpis.stock_total_kg|floatformat:0 }} Kg</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Fournisseurs" %}</div><div class="kpi-value">{{ kpis.nb_fournisseurs }}</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Clients" %}</div><div class="kpi-value">{{ kpis.nb_clients }}</div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="panel">
+      <div class="panel-title">{% trans "Évolution des achats et des ventes" %}</div>
+      <canvas id="chartEvolution" height="90"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="panel">
+      <div class="panel-title">{% trans "Répartition des matières (ventes)" %}</div>
+      <canvas id="chartRepartition" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="panel">
+      <div class="panel-title">{% trans "Top clients" %}</div>
+      <canvas id="chartTopClients" height="180"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel">
+      <div class="panel-title">{% trans "Top fournisseurs" %}</div>
+      <canvas id="chartTopFournisseurs" height="180"></canvas>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const chartData = {{ charts_json|safe }};
+
+const bluePalette = ['#2955e0', '#3766f0', '#5c85f5', '#0fb8a6', '#f2a93b', '#e5484d', '#7d8bab', '#9aa5b8'];
+
+new Chart(document.getElementById('chartEvolution'), {
+  type: 'line',
+  data: {
+    labels: chartData.labels,
+    datasets: [
+      { label: 'Achats', data: chartData.achats_mensuels, borderColor: '#e5484d', backgroundColor: 'rgba(229,72,77,.08)', tension: .35, fill: true },
+      { label: 'Ventes', data: chartData.ventes_mensuelles, borderColor: '#2955e0', backgroundColor: 'rgba(41,85,224,.08)', tension: .35, fill: true },
+    ]
+  },
+  options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('chartRepartition'), {
+  type: 'doughnut',
+  data: {
+    labels: chartData.repartition_labels,
+    datasets: [{ data: chartData.repartition_valeurs, backgroundColor: bluePalette }]
+  },
+  options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } }
+});
+
+new Chart(document.getElementById('chartTopClients'), {
+  type: 'bar',
+  data: {
+    labels: chartData.top_clients_labels,
+    datasets: [{ label: 'Montant (DH)', data: chartData.top_clients_valeurs, backgroundColor: '#2955e0', borderRadius: 6 }]
+  },
+  options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+});
+
+new Chart(document.getElementById('chartTopFournisseurs'), {
+  type: 'bar',
+  data: {
+    labels: chartData.top_fournisseurs_labels,
+    datasets: [{ label: 'Montant (DH)', data: chartData.top_fournisseurs_valeurs, backgroundColor: '#0fb8a6', borderRadius: 6 }]
+  },
+  options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+});
+</script>
+{% endblock %}

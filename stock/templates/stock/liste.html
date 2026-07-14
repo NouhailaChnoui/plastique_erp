@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Stock{% endblock %}
+{% block page_title %}{% trans "Gestion du stock" %}{% endblock %}
+{% block content %}
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Matière" %}</th><th>{% trans "Quantité achetée" %}</th><th>{% trans "Quantité vendue" %}</th><th>{% trans "Stock restant" %}</th><th>{% trans "Alerte" %}</th></tr></thead>
+    <tbody>
+      {% for s in stock %}
+      <tr>
+        <td class="fw-semibold">{{ s.materiau.nom }}</td>
+        <td>{{ s.quantite_achetee_kg|floatformat:2 }} Kg</td>
+        <td>{{ s.quantite_vendue_kg|floatformat:2 }} Kg</td>
+        <td class="{% if s.stock_faible %}text-danger fw-bold{% endif %}">{{ s.stock_kg|floatformat:2 }} Kg</td>
+        <td>
+          {% if s.stock_faible %}
+          <span class="badge-statut badge-non-paye"><i class="fa-solid fa-triangle-exclamation me-1"></i>Stock faible</span>
+          {% else %}
+          <span class="badge-statut badge-paye">{% trans "Normal" %}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="text-center text-secondary py-4">{% trans "Aucune matière enregistrée." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

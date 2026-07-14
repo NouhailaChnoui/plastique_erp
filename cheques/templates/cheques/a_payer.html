@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Chèques à payer" %}{% endblock %}
+{% block page_title %}{% trans "Chèques à payer" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <form class="d-flex gap-2">
+    <select name="periode" class="form-select" onchange="this.form.submit()">
+      <option value="">{% trans "Toutes les échéances" %}</option>
+      <option value="aujourdhui" {% if periode == "aujourdhui" %}selected{% endif %}>{% trans "Aujourd'hui" %}</option>
+      <option value="semaine" {% if periode == "semaine" %}selected{% endif %}>{% trans "Cette semaine" %}</option>
+      <option value="mois" {% if periode == "mois" %}selected{% endif %}>{% trans "Ce mois" %}</option>
+    </select>
+  </form>
+</div>
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Fournisseur" %}</th><th>{% trans "N° chèque" %}</th><th>{% trans "Banque" %}</th><th>{% trans "Montant" %}</th><th>{% trans "Échéance" %}</th><th>{% trans "Photo" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for c in cheques %}
+      <tr>
+        <td class="fw-semibold">{{ c.paiement.achat.fournisseur }}</td>
+        <td>{{ c.numero }}</td>
+        <td>{{ c.banque }}</td>
+        <td>{{ c.montant|floatformat:2 }} DH</td>
+        <td>{{ c.date_encaissement }}</td>
+        <td>{% if c.photo %}<a href="{{ c.photo.url }}" target="_blank"><i class="fa-solid fa-image"></i></a>{% else %}—{% endif %}</td>
+        <td class="text-end">
+          <form method="post" action="{% url 'achats:cheque_statut' c.pk %}" class="d-inline">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit" name="statut" value="encaisse" class="btn btn-sm btn-outline-success" title="{% trans 'Marquer encaissé' %}"><i class="fa-solid fa-check"></i></button>
+          </form>
+          <form method="post" action="{% url 'achats:cheque_statut' c.pk %}" class="d-inline">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit" name="statut" value="annule" class="btn btn-sm btn-outline-danger" title="{% trans 'Annuler le chèque' %}"><i class="fa-solid fa-ban"></i></button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center text-secondary py-4">{% trans "Aucun chèque en attente." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

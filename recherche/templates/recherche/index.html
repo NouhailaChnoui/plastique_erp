@@ -1,0 +1,66 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Recherche globale" %}{% endblock %}
+{% block page_title %}{% trans "Recherche globale" %}{% endblock %}
+{% block content %}
+<form class="mb-4">
+  <div class="input-group" style="max-width:520px;">
+    <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-secondary"></i></span>
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans "Client, fournisseur, matière, facture, date..." %}">
+    <button class="btn btn-primary">{% trans "Rechercher" %}</button>
+  </div>
+</form>
+
+{% if q %}
+<p class="text-secondary">{{ total }} résultat(s) pour « {{ q }} »</p>
+
+{% if resultats.clients %}
+<div class="panel">
+  <div class="panel-title">{% trans "Clients" %}</div>
+  {% for c in resultats.clients %}
+  <a href="{% url 'partenaires:client_detail' c.pk %}" class="d-block py-2 border-bottom text-decoration-none text-body">{{ c.nom }} — {{ c.ville|default:"" }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if resultats.fournisseurs %}
+<div class="panel">
+  <div class="panel-title">{% trans "Fournisseurs" %}</div>
+  {% for f in resultats.fournisseurs %}
+  <a href="{% url 'partenaires:fournisseur_detail' f.pk %}" class="d-block py-2 border-bottom text-decoration-none text-body">{{ f.nom }} — {{ f.ville|default:"" }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if resultats.materiaux %}
+<div class="panel">
+  <div class="panel-title">{% trans "Matières" %}</div>
+  {% for m in resultats.materiaux %}
+  <div class="d-block py-2 border-bottom">{{ m.nom }} ({{ m.code }})</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if resultats.achats %}
+<div class="panel">
+  <div class="panel-title">{% trans "Achats" %}</div>
+  {% for a in resultats.achats %}
+  <a href="{% url 'achats:detail' a.pk %}" class="d-block py-2 border-bottom text-decoration-none text-body">{{ a.numero_bon }} — {{ a.fournisseur }} — {{ a.materiau }} — {{ a.montant_total|floatformat:2 }} DH</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if resultats.ventes %}
+<div class="panel">
+  <div class="panel-title">{% trans "Ventes" %}</div>
+  {% for v in resultats.ventes %}
+  <a href="{% url 'ventes:detail' v.pk %}" class="d-block py-2 border-bottom text-decoration-none text-body">{{ v.numero_facture }} — {{ v.client }} — {{ v.materiau }} — {{ v.montant_total|floatformat:2 }} DH</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if total == 0 %}
+<div class="panel text-center text-secondary py-5">Aucun résultat trouvé.</div>
+{% endif %}
+{% endif %}
+{% endblock %}

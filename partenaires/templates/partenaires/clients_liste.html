@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Clients" %}{% endblock %}
+{% block page_title %}{% trans "Clients" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <form class="d-flex gap-2">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans "Rechercher un client..." %}">
+    <button class="btn btn-outline-secondary"><i class="fa-solid fa-search"></i></button>
+  </form>
+  <a href="{% url 'partenaires:client_creer' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Nouveau client</a>
+</div>
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Nom" %}</th><th>{% trans "Téléphone" %}</th><th>{% trans "Ville" %}</th><th>{% trans "Nb ventes" %}</th><th>{% trans "Total acheté" %}</th><th>{% trans "Payé" %}</th><th>{% trans "Restant" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td class="fw-semibold"><a href="{% url 'partenaires:client_detail' c.pk %}">{{ c.nom }}</a></td>
+        <td>{{ c.telephone|default:"—" }}</td>
+        <td>{{ c.ville|default:"—" }}</td>
+        <td>{{ c.nombre_ventes }}</td>
+        <td>{{ c.total_achete|floatformat:2 }} DH</td>
+        <td>{{ c.total_paye|floatformat:2 }} DH</td>
+        <td class="{% if c.montant_restant > 0 %}text-danger fw-semibold{% endif %}">{{ c.montant_restant|floatformat:2 }} DH</td>
+        <td class="text-end"><a href="{% url 'partenaires:client_modifier' c.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i></a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="text-center text-secondary py-4">{% trans "Aucun client." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

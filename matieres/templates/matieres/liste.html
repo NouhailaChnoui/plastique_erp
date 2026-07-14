@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Matières{% endblock %}
+{% block page_title %}{% trans "Gestion des matières" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <div></div>
+  <a href="{% url 'matieres:creer' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Ajouter une matière</a>
+</div>
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Nom" %}</th><th>{% trans "Code" %}</th><th>{% trans "Statut" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for m in materiaux %}
+      <tr>
+        <td class="fw-semibold">{{ m.nom }}</td>
+        <td><span class="text-secondary">{{ m.code }}</span></td>
+        <td>{% if m.actif %}<span class="badge-statut badge-paye">{% trans "Active" %}</span>{% else %}<span class="badge-statut badge-non-paye">{% trans "Inactive" %}</span>{% endif %}</td>
+        <td class="text-end">
+          <a href="{% url 'matieres:modifier' m.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i></a>
+          <a href="{% url 'matieres:supprimer' m.pk %}" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="text-center text-secondary py-4">{% trans "Aucune matière enregistrée." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

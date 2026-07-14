@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Exports{% endblock %}
+{% block page_title %}{% trans "Exports PDF / Excel" %}{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-6 col-lg-4">
+    <div class="panel h-100 text-center">
+      <div class="kpi-icon bg-icon-blue mx-auto mb-2"><i class="fa-solid fa-truck-ramp-box"></i></div>
+      <div class="panel-title">{% trans "Achats" %}</div>
+      <a href="{% url 'exports:excel' 'achats' %}" class="btn btn-outline-primary btn-sm me-1"><i class="fa-solid fa-file-excel me-1"></i>Excel</a>
+      <a href="{% url 'exports:pdf' 'achats' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="panel h-100 text-center">
+      <div class="kpi-icon bg-icon-teal mx-auto mb-2"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+      <div class="panel-title">{% trans "Ventes" %}</div>
+      <a href="{% url 'exports:excel' 'ventes' %}" class="btn btn-outline-primary btn-sm me-1"><i class="fa-solid fa-file-excel me-1"></i>Excel</a>
+      <a href="{% url 'exports:pdf' 'ventes' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="panel h-100 text-center">
+      <div class="kpi-icon bg-icon-blue mx-auto mb-2"><i class="fa-solid fa-user-group"></i></div>
+      <div class="panel-title">{% trans "Clients" %}</div>
+      <a href="{% url 'exports:excel' 'clients' %}" class="btn btn-outline-primary btn-sm me-1"><i class="fa-solid fa-file-excel me-1"></i>Excel</a>
+      <a href="{% url 'exports:pdf' 'clients' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="panel h-100 text-center">
+      <div class="kpi-icon bg-icon-amber mx-auto mb-2"><i class="fa-solid fa-industry"></i></div>
+      <div class="panel-title">{% trans "Fournisseurs" %}</div>
+      <a href="{% url 'exports:excel' 'fournisseurs' %}" class="btn btn-outline-primary btn-sm me-1"><i class="fa-solid fa-file-excel me-1"></i>Excel</a>
+      <a href="{% url 'exports:pdf' 'fournisseurs' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="panel h-100 text-center">
+      <div class="kpi-icon bg-icon-red mx-auto mb-2"><i class="fa-solid fa-boxes-stacked"></i></div>
+      <div class="panel-title">{% trans "Stock" %}</div>
+      <a href="{% url 'exports:excel' 'stock' %}" class="btn btn-outline-primary btn-sm me-1"><i class="fa-solid fa-file-excel me-1"></i>Excel</a>
+      <a href="{% url 'exports:pdf' 'stock' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

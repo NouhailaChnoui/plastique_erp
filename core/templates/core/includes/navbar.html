@@ -1,0 +1,66 @@
+{% load i18n %}
+<header class="topbar">
+    <button class="icon-btn d-lg-none" id="sidebarToggle" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+
+    <div class="topbar-actions">
+        <div class="dropdown">
+            <button class="icon-btn" data-bs-toggle="dropdown" aria-label="Langue" title="Changer de langue">
+                <i class="fa-solid fa-language"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" name="language" value="fr" class="dropdown-item {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">Français</button>
+                    <button type="submit" name="language" value="ar" class="dropdown-item {% if LANGUAGE_CODE == 'ar' %}active{% endif %}">العربية</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="icon-btn position-relative" data-bs-toggle="dropdown" aria-label="Notifications">
+                <i class="fa-solid fa-bell"></i>
+                {% if notifications_count %}
+                <span class="notif-badge">{{ notifications_count }}</span>
+                {% endif %}
+            </button>
+            <div class="dropdown-menu dropdown-menu-end notif-panel">
+                <div class="notif-panel-header">{% trans "Notifications" %}</div>
+                {% if notifications %}
+                    {% for n in notifications %}
+                    <a href="{{ n.url }}" class="notif-item">
+                        <i class="fa-solid {{ n.icon }} notif-icon notif-icon-{{ n.level }}"></i>
+                        <span>{{ n.message }}</span>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="notif-empty">{% trans "Aucune notification" %}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <button class="icon-btn" id="darkModeToggle" aria-label="Mode sombre">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <div class="dropdown">
+            <button class="user-pill" data-bs-toggle="dropdown">
+                <div class="user-avatar-sm">{{ request.user.username|slice:":1"|upper }}</div>
+                <span class="d-none d-md-inline">{{ request.user.username }}</span>
+                <i class="fa-solid fa-chevron-down small"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <form method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i>{% trans "Déconnexion" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>

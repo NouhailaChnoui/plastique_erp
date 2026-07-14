@@ -1,0 +1,95 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Ventes{% endblock %}
+{% block page_title %}{% trans "Gestion des ventes" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <form class="d-flex gap-2 flex-wrap">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans "Facture, client, matière..." %}">
+    <select name="statut" class="form-select" style="max-width:170px;">
+      <option value="">{% trans "Tous statuts" %}</option>
+      <option value="non-paye" {% if statut == "non-paye" %}selected{% endif %}>Non payé</option>
+      <option value="en-cours" {% if statut == "en-cours" %}selected{% endif %}>En cours</option>
+      <option value="paye" {% if statut == "paye" %}selected{% endif %}>Payé</option>
+    </select>
+    <button class="btn btn-outline-secondary"><i class="fa-solid fa-filter"></i></button>
+  </form>
+  <a href="{% url 'ventes:creer' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Nouvelle vente</a>
+</div>
+
+<form method="post" action="{% url 'ventes:facture_groupee_pdf' %}" target="_blank" id="form-groupee">
+{% csrf_token %}
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr>
+      <th style="width:36px;"><input type="checkbox" id="check-all-ventes"></th>
+      <th>{% trans "Facture" %}</th><th>{% trans "Client" %}</th><th>{% trans "Matière" %}</th><th>{% trans "Quantité" %}</th><th>{% trans "Montant" %}</th><th>{% trans "Date" %}</th><th>{% trans "Statut" %}</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for v in ventes %}
+      <tr>
+        <td><input type="checkbox" name="vente_ids" value="{{ v.pk }}" class="check-vente"></td>
+        <td class="fw-semibold">{{ v.numero_facture }}</td>
+        <td>{{ v.client }}</td>
+        <td>{{ v.materiau }}</td>
+        <td>{{ v.quantite }} Kg</td>
+        <td>{{ v.montant_total|floatformat:2 }} DH</td>
+        <td>{{ v.date_vente }}</td>
+        <td><span class="badge-statut badge-{{ v.statut_paiement_css }}">{{ v.statut_paiement }}</span></td>
+        <td class="text-end">
+          <a href="{% url 'ventes:detail' v.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+          <a href="{% url 'ventes:facture_pdf' v.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-file-pdf"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="9" class="text-center text-secondary py-4">{% trans "Aucune vente enregistrée." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if ventes %}
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <span class="text-secondary small" id="selection-info-ventes">{% trans "Aucune sélection" %}</span>
+  <button type="submit" class="btn btn-primary" id="btn-groupee-ventes" disabled>
+    <i class="fa-solid fa-file-invoice me-1"></i>{% trans "Générer un relevé groupé (PDF)" %}
+  </button>
+</div>
+{% endif %}
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+  const checkAll = document.getElementById("check-all-ventes");
+  const checks = document.querySelectorAll(".check-vente");
+  const btn = document.getElementById("btn-groupee-ventes");
+  const info = document.getElementById("selection-info-ventes");
+
+  function updateInfo() {
+    const checked = document.querySelectorAll(".check-vente:checked");
+    const total = Array.from(checked).reduce((sum, cb) => {
+      const row = cb.closest("tr");
+      const montantText = row.children[5].textContent.replace(/[^\d,.-]/g, "").replace(",", ".");
+      return sum + (parseFloat(montantText) || 0);
+    }, 0);
+    if (checked.length > 0) {
+      info.textContent = checked.length + " {% trans "facture(s) sélectionnée(s) — Total" %} : " + total.toLocaleString("fr-FR", {minimumFractionDigits: 2}) + " DH";
+      btn.disabled = false;
+    } else {
+      info.textContent = "{% trans "Aucune sélection" %}";
+      btn.disabled = true;
+    }
+  }
+
+  if (checkAll) {
+    checkAll.addEventListener("change", () => {
+      checks.forEach(cb => cb.checked = checkAll.checked);
+      updateInfo();
+    });
+  }
+  checks.forEach(cb => cb.addEventListener("change", updateInfo));
+})();
+</script>
+{% endblock %}

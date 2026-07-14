@@ -1,0 +1,97 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}Achats{% endblock %}
+{% block page_title %}{% trans "Gestion des achats" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <form class="d-flex gap-2 flex-wrap">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans "N° bon, fournisseur, matière..." %}">
+    <select name="statut" class="form-select" style="max-width:170px;">
+      <option value="">{% trans "Tous statuts" %}</option>
+      <option value="non-paye" {% if statut == "non-paye" %}selected{% endif %}>Non payé</option>
+      <option value="en-cours" {% if statut == "en-cours" %}selected{% endif %}>En cours</option>
+      <option value="paye" {% if statut == "paye" %}selected{% endif %}>Payé</option>
+    </select>
+    <button class="btn btn-outline-secondary"><i class="fa-solid fa-filter"></i></button>
+  </form>
+  <a href="{% url 'achats:creer' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Nouvel achat</a>
+</div>
+
+<form method="post" action="{% url 'achats:facture_groupee_pdf' %}" target="_blank" id="form-groupee">
+{% csrf_token %}
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr>
+      <th style="width:36px;"><input type="checkbox" id="check-all-achats"></th>
+      <th>{% trans "N° Bon" %}</th><th>{% trans "Facture" %}</th><th>{% trans "Fournisseur" %}</th><th>{% trans "Matière" %}</th><th>{% trans "Quantité" %}</th><th>{% trans "Montant" %}</th><th>{% trans "Date" %}</th><th>{% trans "Statut" %}</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for a in achats %}
+      <tr>
+        <td><input type="checkbox" name="achat_ids" value="{{ a.pk }}" class="check-achat"></td>
+        <td class="fw-semibold">{{ a.numero_bon }}</td>
+        <td>{{ a.numero_facture }}</td>
+        <td>{{ a.fournisseur }}</td>
+        <td>{{ a.materiau }}</td>
+        <td>{{ a.quantite }} Kg</td>
+        <td>{{ a.montant_total|floatformat:2 }} DH</td>
+        <td>{{ a.date_achat }}</td>
+        <td><span class="badge-statut badge-{{ a.statut_paiement_css }}">{{ a.statut_paiement }}</span></td>
+        <td class="text-end">
+          <a href="{% url 'achats:detail' a.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+          <a href="{% url 'achats:facture_pdf' a.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-file-pdf"></i></a>
+          <a href="{% url 'achats:modifier' a.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i></a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="10" class="text-center text-secondary py-4">{% trans "Aucun achat enregistré." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if achats %}
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <span class="text-secondary small" id="selection-info-achats">{% trans "Aucune sélection" %}</span>
+  <button type="submit" class="btn btn-primary" id="btn-groupee-achats" disabled>
+    <i class="fa-solid fa-file-invoice me-1"></i>{% trans "Générer un relevé groupé (PDF)" %}
+  </button>
+</div>
+{% endif %}
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+  const checkAll = document.getElementById("check-all-achats");
+  const checks = document.querySelectorAll(".check-achat");
+  const btn = document.getElementById("btn-groupee-achats");
+  const info = document.getElementById("selection-info-achats");
+
+  function updateInfo() {
+    const checked = document.querySelectorAll(".check-achat:checked");
+    const total = Array.from(checked).reduce((sum, cb) => {
+      const row = cb.closest("tr");
+      const montantText = row.children[6].textContent.replace(/[^\d,.-]/g, "").replace(",", ".");
+      return sum + (parseFloat(montantText) || 0);
+    }, 0);
+    if (checked.length > 0) {
+      info.textContent = checked.length + " {% trans "facture(s) sélectionnée(s) — Total" %} : " + total.toLocaleString("fr-FR", {minimumFractionDigits: 2}) + " DH";
+      btn.disabled = false;
+    } else {
+      info.textContent = "{% trans "Aucune sélection" %}";
+      btn.disabled = true;
+    }
+  }
+
+  if (checkAll) {
+    checkAll.addEventListener("change", () => {
+      checks.forEach(cb => cb.checked = checkAll.checked);
+      updateInfo();
+    });
+  }
+  checks.forEach(cb => cb.addEventListener("change", updateInfo));
+})();
+</script>
+{% endblock %}

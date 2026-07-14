@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{{ client.nom }}{% endblock %}
+{% block content %}
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total acheté" %}</div><div class="kpi-value">{{ client.total_achete|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total payé" %}</div><div class="kpi-value">{{ client.total_paye|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Solde restant" %}</div><div class="kpi-value">{{ client.montant_restant|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Nombre de ventes" %}</div><div class="kpi-value">{{ client.nombre_ventes }}</div></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">{% trans "Coordonnées" %}</div>
+  <p class="mb-1"><i class="fa-solid fa-phone me-2 text-secondary"></i>{{ client.telephone|default:"—" }}</p>
+  <p class="mb-1"><i class="fa-solid fa-location-dot me-2 text-secondary"></i>{{ client.ville|default:"—" }} {{ client.adresse }}</p>
+</div>
+
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Date" %}</th><th>{% trans "Matière" %}</th><th>{% trans "Quantité" %}</th><th>{% trans "Montant" %}</th><th>{% trans "Statut" %}</th><th>{% trans "Facture" %}</th></tr></thead>
+    <tbody>
+      {% for v in ventes %}
+      <tr>
+        <td>{{ v.date_vente }}</td>
+        <td>{{ v.materiau }}</td>
+        <td>{{ v.quantite }} Kg</td>
+        <td>{{ v.montant_total|floatformat:2 }} DH</td>
+        <td><span class="badge-statut badge-{{ v.statut_paiement_css }}">{{ v.statut_paiement }}</span></td>
+        <td><a href="{% url 'ventes:facture_pdf' v.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-pdf"></i></a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-secondary py-4">{% trans "Aucune vente pour ce client." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{{ titre }}{% endblock %}
+{% block content %}
+<div class="card-form mx-auto" style="max-width:520px;">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3"><label class="form-label">{% trans "Nom" %}</label>{{ form.nom }}</div>
+    <div class="mb-3"><label class="form-label">{% trans "Téléphone" %}</label>{{ form.telephone }}</div>
+    <div class="mb-3"><label class="form-label">{% trans "Ville" %}</label>{{ form.ville }}</div>
+    <div class="mb-3"><label class="form-label">{% trans "Adresse" %}</label>{{ form.adresse }}</div>
+    <div class="d-flex justify-content-end gap-2">
+      <a href="{% url 'partenaires:fournisseurs_liste' %}" class="btn btn-outline-secondary">{% trans "Annuler" %}</a>
+      <button class="btn btn-primary">{% trans "Enregistrer" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

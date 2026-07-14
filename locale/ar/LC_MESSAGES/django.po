@@ -1,0 +1,617 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Chnoui ERP 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-14 10:01+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Chnoui ERP\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Nom d'utilisateur"
+msgstr "اسم المستخدم"
+
+msgid "Votre identifiant"
+msgstr "معرّفك"
+
+msgid "Mot de passe"
+msgstr "كلمة المرور"
+
+msgid "Nouvel employé"
+msgstr "موظف جديد"
+
+msgid "Rôle"
+msgstr "الدور"
+
+msgid "Prénom"
+msgstr "الاسم الشخصي"
+
+msgid "Nom"
+msgstr "الاسم"
+
+msgid "Téléphone"
+msgstr "الهاتف"
+
+msgid "Confirmation"
+msgstr "تأكيد"
+
+msgid "Annuler"
+msgstr "إلغاء"
+
+msgid "Créer l'employé"
+msgstr "إنشاء الموظف"
+
+msgid "Gestion des employés"
+msgstr "إدارة الموظفين"
+
+msgid "Utilisateur"
+msgstr "المستخدم"
+
+msgid "Nom complet"
+msgstr "الاسم الكامل"
+
+msgid "Statut"
+msgstr "الحالة"
+
+msgid "Administrateur"
+msgstr "مدير"
+
+msgid "Employé"
+msgstr "موظف"
+
+msgid "Actif"
+msgstr "نشط"
+
+msgid "Désactivé"
+msgstr "معطّل"
+
+msgid "Aucun employé."
+msgstr "لا يوجد أي موظف."
+
+msgid "Connexion"
+msgstr "تسجيل الدخول"
+
+msgid "Connectez-vous pour accéder à votre espace de gestion."
+msgstr "سجّل الدخول للوصول إلى مساحة الإدارة الخاصة بك."
+
+msgid "Se connecter"
+msgstr "تسجيل الدخول"
+
+msgid "Identifiant ou mot de passe incorrect."
+msgstr "المعرّف أو كلمة المرور غير صحيحة."
+
+msgid "Employé créé avec succès."
+msgstr "تم إنشاء الموظف بنجاح."
+
+#, python-format
+msgid "Statut de %(u)s mis à jour."
+msgstr "تم تحديث حالة %(u)s."
+
+msgid "Espèces"
+msgstr "نقداً"
+
+msgid "Chèque"
+msgstr "شيك"
+
+msgid "Mixte (Espèces + Chèque)"
+msgstr "مختلط (نقداً + شيك)"
+
+msgid "En attente"
+msgstr "في الانتظار"
+
+msgid "Encaissé"
+msgstr "محصّل"
+
+msgid "Annulé"
+msgstr "ملغى"
+
+#, python-format
+msgid "Achat %(numero)s"
+msgstr "الشراء %(numero)s"
+
+msgid "Montant total"
+msgstr "المبلغ الإجمالي"
+
+msgid "Montant payé"
+msgstr "المبلغ المدفوع"
+
+msgid "Reste à payer"
+msgstr "المتبقي للدفع"
+
+msgid "Détails de l'achat"
+msgstr "تفاصيل الشراء"
+
+msgid "Paiements"
+msgstr "الدفعات"
+
+msgid "Ajouter un paiement"
+msgstr "إضافة دفعة"
+
+msgid "échéance"
+msgstr "الاستحقاق"
+
+msgid "Marquer encaissé"
+msgstr "تحديد كمحصّل"
+
+msgid "Remettre en attente"
+msgstr "إعادة إلى الانتظار"
+
+msgid "Annuler le chèque"
+msgstr "إلغاء الشيك"
+
+msgid "Aucun paiement enregistré pour cet achat."
+msgstr "لا توجد أي دفعة مسجّلة لهذا الشراء."
+
+msgid "Fournisseur"
+msgstr "المورد"
+
+msgid "Matière"
+msgstr "المادة"
+
+msgid "Quantité (Kg)"
+msgstr "الكمية (كغ)"
+
+msgid "Prix unitaire (DH/Kg)"
+msgstr "سعر الوحدة (درهم/كغ)"
+
+msgid "Montant total (calcul automatique)"
+msgstr "المبلغ الإجمالي (حساب تلقائي)"
+
+msgid "Date d'achat"
+msgstr "تاريخ الشراء"
+
+msgid "N° du bon"
+msgstr "رقم السند"
+
+msgid "Photo du bon de pesée"
+msgstr "صورة سند الوزن"
+
+msgid "Observations"
+msgstr "ملاحظات"
+
+msgid "Enregistrer l'achat"
+msgstr "تسجيل الشراء"
+
+msgid "Gestion des achats"
+msgstr "إدارة المشتريات"
+
+msgid "N° bon, fournisseur, matière..."
+msgstr "رقم السند، المورد، المادة..."
+
+msgid "Tous statuts"
+msgstr "كل الحالات"
+
+msgid "N° Bon"
+msgstr "رقم السند"
+
+msgid "Facture"
+msgstr "الفاتورة"
+
+msgid "Quantité"
+msgstr "الكمية"
+
+msgid "Montant"
+msgstr "المبلغ"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Aucun achat enregistré."
+msgstr "لا يوجد أي شراء مسجّل."
+
+msgid "Aucune sélection"
+msgstr "لا يوجد أي تحديد"
+
+msgid "Générer un relevé groupé (PDF)"
+msgstr "إنشاء كشف مجمّع (PDF)"
+
+msgid "facture(s) sélectionnée(s) — Total"
+msgstr "فاتورة (فواتير) محددة — المجموع"
+
+#, python-format
+msgid "Paiement — Achat %(numero)s"
+msgstr "دفعة — الشراء %(numero)s"
+
+msgid "Mode de paiement"
+msgstr "طريقة الدفع"
+
+msgid "Montant espèces"
+msgstr "المبلغ نقداً"
+
+msgid "Date de paiement"
+msgstr "تاريخ الدفع"
+
+msgid "Chèques (si mode Chèque ou Mixte)"
+msgstr "الشيكات (في حالة الدفع بشيك أو مختلط)"
+
+msgid "Laissez vide si le paiement est entièrement en espèces."
+msgstr "اتركه فارغاً إذا كان الدفع نقداً بالكامل."
+
+msgid "Enregistrer le paiement"
+msgstr "تسجيل الدفعة"
+
+#, python-format
+msgid ""
+"Achat enregistré. Facture %(facture)s générée. Montant total : %(montant)s DH"
+msgstr ""
+
+msgid "Nouvel achat"
+msgstr "شراء جديد"
+
+msgid "Achat mis à jour."
+msgstr "تم تحديث الشراء."
+
+msgid "Modifier l'achat"
+msgstr "تعديل الشراء"
+
+msgid "Paiement enregistré avec succès."
+msgstr "تم تسجيل الدفعة بنجاح."
+
+msgid "Merci de vérifier les informations des chèques."
+msgstr "يرجى التحقق من معلومات الشيكات."
+
+msgid "Statut du chèque mis à jour."
+msgstr "تم تحديث حالة الشيك."
+
+msgid "Merci de sélectionner au moins une facture."
+msgstr "يرجى تحديد فاتورة واحدة على الأقل."
+
+msgid "Aucune facture correspondante trouvée."
+msgstr "لم يتم العثور على أي فاتورة مطابقة."
+
+msgid "Chèques à encaisser"
+msgstr "شيكات للتحصيل"
+
+msgid "Toutes les échéances"
+msgstr "جميع تواريخ الاستحقاق"
+
+msgid "Aujourd'hui"
+msgstr "اليوم"
+
+msgid "Cette semaine"
+msgstr "هذا الأسبوع"
+
+msgid "Ce mois"
+msgstr "هذا الشهر"
+
+msgid "Client"
+msgstr "الزبون"
+
+msgid "N° chèque"
+msgstr "رقم الشيك"
+
+msgid "Banque"
+msgstr "البنك"
+
+msgid "Date d'encaissement"
+msgstr "تاريخ التحصيل"
+
+msgid "Photo"
+msgstr "الصورة"
+
+msgid "Aucun chèque en attente."
+msgstr "لا يوجد أي شيك في الانتظار."
+
+msgid "Chèques à payer"
+msgstr "شيكات للدفع"
+
+msgid "Échéance"
+msgstr "تاريخ الاستحقاق"
+
+msgid "Tableau de bord"
+msgstr "لوحة القيادة"
+
+msgid "Notifications"
+msgstr "الإشعارات"
+
+msgid "Aucune notification"
+msgstr "لا توجد أي إشعارات"
+
+msgid "Déconnexion"
+msgstr "تسجيل الخروج"
+
+msgid "Gestion Matières Plastiques"
+msgstr "إدارة المواد البلاستيكية"
+
+msgid "Général"
+msgstr "عام"
+
+msgid "Recherche globale"
+msgstr "بحث شامل"
+
+msgid "Opérations"
+msgstr "العمليات"
+
+msgid "Achats"
+msgstr "المشتريات"
+
+msgid "Ventes"
+msgstr "المبيعات"
+
+msgid "Stock"
+msgstr "المخزون"
+
+msgid "Matières"
+msgstr "المواد"
+
+msgid "Chèques"
+msgstr "الشيكات"
+
+msgid "Répertoire"
+msgstr "الدليل"
+
+msgid "Clients"
+msgstr "الزبائن"
+
+msgid "Fournisseurs"
+msgstr "الموردون"
+
+msgid "Administration"
+msgstr "الإدارة"
+
+msgid "Exports"
+msgstr "التصدير"
+
+msgid "Employés"
+msgstr "الموظفون"
+
+msgid "Achats aujourd'hui"
+msgstr "مشتريات اليوم"
+
+msgid "Ventes aujourd'hui"
+msgstr "مبيعات اليوم"
+
+msgid "Chiffre d'affaires"
+msgstr "رقم المعاملات"
+
+msgid "Dépenses"
+msgstr "المصاريف"
+
+msgid "Profit"
+msgstr "الربح"
+
+msgid "Chèques en attente"
+msgstr "شيكات في الانتظار"
+
+msgid "Créances clients"
+msgstr "ديون الزبائن"
+
+msgid "Dettes fournisseurs"
+msgstr "ديون الموردين"
+
+msgid "Total des achats"
+msgstr "إجمالي المشتريات"
+
+msgid "Total des ventes"
+msgstr "إجمالي المبيعات"
+
+msgid "Stock disponible"
+msgstr "المخزون المتوفر"
+
+msgid "Évolution des achats et des ventes"
+msgstr "تطور المشتريات والمبيعات"
+
+msgid "Répartition des matières (ventes)"
+msgstr "توزيع المواد (المبيعات)"
+
+msgid "Top clients"
+msgstr "أفضل الزبائن"
+
+msgid "Top fournisseurs"
+msgstr "أفضل الموردين"
+
+msgid "Exports PDF / Excel"
+msgstr "تصدير PDF / Excel"
+
+msgid "Supprimer la matière"
+msgstr "حذف المادة"
+
+msgid "Supprimer"
+msgstr "حذف"
+
+msgid "Nom de la matière"
+msgstr "اسم المادة"
+
+msgid "Code"
+msgstr "الرمز"
+
+msgid "Enregistrer"
+msgstr "حفظ"
+
+msgid "Gestion des matières"
+msgstr "إدارة المواد"
+
+msgid "Active"
+msgstr "نشطة"
+
+msgid "Inactive"
+msgstr "غير نشطة"
+
+msgid "Aucune matière enregistrée."
+msgstr "لا توجد أي مادة مسجّلة."
+
+msgid "Matière ajoutée avec succès."
+msgstr "تمت إضافة المادة بنجاح."
+
+msgid "Nouvelle matière"
+msgstr "مادة جديدة"
+
+msgid "Matière mise à jour."
+msgstr "تم تحديث المادة."
+
+msgid "Modifier la matière"
+msgstr "تعديل المادة"
+
+msgid "Matière supprimée."
+msgstr "تم حذف المادة."
+
+msgid "Total acheté"
+msgstr "إجمالي المشتريات"
+
+msgid "Total payé"
+msgstr "إجمالي المدفوع"
+
+msgid "Solde restant"
+msgstr "الرصيد المتبقي"
+
+msgid "Nombre de ventes"
+msgstr "عدد المبيعات"
+
+msgid "Coordonnées"
+msgstr "معلومات الاتصال"
+
+msgid "Aucune vente pour ce client."
+msgstr "لا توجد أي مبيعة لهذا الزبون."
+
+msgid "Ville"
+msgstr "المدينة"
+
+msgid "Adresse"
+msgstr "العنوان"
+
+msgid "Rechercher un client..."
+msgstr "البحث عن زبون..."
+
+msgid "Nb ventes"
+msgstr "عدد المبيعات"
+
+msgid "Payé"
+msgstr "مدفوع"
+
+msgid "Restant"
+msgstr "المتبقي"
+
+msgid "Aucun client."
+msgstr "لا يوجد أي زبون."
+
+msgid "Nombre d'achats"
+msgstr "عدد المشتريات"
+
+msgid "Bon"
+msgstr "السند"
+
+msgid "Aucun achat pour ce fournisseur."
+msgstr "لا يوجد أي شراء لهذا المورد."
+
+msgid "Rechercher un fournisseur..."
+msgstr "البحث عن مورد..."
+
+msgid "Nb achats"
+msgstr "عدد المشتريات"
+
+msgid "Aucun fournisseur."
+msgstr "لا يوجد أي مورد."
+
+msgid "Client ajouté avec succès."
+msgstr "تمت إضافة الزبون بنجاح."
+
+msgid "Nouveau client"
+msgstr "زبون جديد"
+
+msgid "Client mis à jour."
+msgstr "تم تحديث الزبون."
+
+msgid "Modifier le client"
+msgstr "تعديل الزبون"
+
+msgid "Fournisseur ajouté avec succès."
+msgstr "تمت إضافة المورد بنجاح."
+
+msgid "Nouveau fournisseur"
+msgstr "مورد جديد"
+
+msgid "Fournisseur mis à jour."
+msgstr "تم تحديث المورد."
+
+msgid "Modifier le fournisseur"
+msgstr "تعديل المورد"
+
+msgid "Client, fournisseur, matière, facture, date..."
+msgstr "زبون، مورد، مادة، فاتورة، تاريخ..."
+
+msgid "Rechercher"
+msgstr "بحث"
+
+msgid "Gestion du stock"
+msgstr "إدارة المخزون"
+
+msgid "Quantité achetée"
+msgstr "الكمية المشتراة"
+
+msgid "Quantité vendue"
+msgstr "الكمية المباعة"
+
+msgid "Stock restant"
+msgstr "المخزون المتبقي"
+
+msgid "Alerte"
+msgstr "تنبيه"
+
+msgid "Normal"
+msgstr "عادي"
+
+#, python-format
+msgid "Vente %(numero)s"
+msgstr "البيع %(numero)s"
+
+msgid "Montant reçu"
+msgstr "المبلغ المستلم"
+
+msgid "Reste à recevoir"
+msgstr "المتبقي للاستلام"
+
+msgid "Détails de la vente"
+msgstr "تفاصيل البيع"
+
+msgid "encaissement"
+msgstr "التحصيل"
+
+msgid "Aucun paiement enregistré pour cette vente."
+msgstr "لا توجد أي دفعة مسجّلة لهذا البيع."
+
+msgid "Prix de vente (DH/Kg)"
+msgstr "سعر البيع (درهم/كغ)"
+
+msgid "Date de vente"
+msgstr "تاريخ البيع"
+
+msgid "Enregistrer la vente"
+msgstr "تسجيل البيع"
+
+msgid "Gestion des ventes"
+msgstr "إدارة المبيعات"
+
+msgid "Facture, client, matière..."
+msgstr "الفاتورة، الزبون، المادة..."
+
+msgid "Aucune vente enregistrée."
+msgstr "لا توجد أي مبيعة مسجّلة."
+
+#, python-format
+msgid "Paiement — Vente %(numero)s"
+msgstr "دفعة — البيع %(numero)s"
+
+#, python-format
+msgid "Vente enregistrée. Facture %(facture)s générée."
+msgstr "تم تسجيل البيع. تم إنشاء الفاتورة %(facture)s."
+
+msgid "Nouvelle vente"
+msgstr "بيع جديد"
+
+msgid "Vente mise à jour."
+msgstr "تم تحديث البيع."
+
+msgid "Modifier la vente"
+msgstr "تعديل البيع"

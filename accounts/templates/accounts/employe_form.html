@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Nouvel employé" %}{% endblock %}
+{% block page_title %}{% trans "Nouvel employé" %}{% endblock %}
+{% block content %}
+<div class="card-form mx-auto" style="max-width:560px;">
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label">{% trans "Nom d'utilisateur" %}</label>{{ form.username }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Rôle" %}</label>{{ form.role }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Prénom" %}</label>{{ form.first_name }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Nom" %}</label>{{ form.last_name }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Téléphone" %}</label>{{ form.telephone }}</div>
+      <div class="col-md-6"></div>
+      <div class="col-md-6"><label class="form-label">{% trans "Mot de passe" %}</label>{{ form.password1 }}</div>
+      <div class="col-md-6"><label class="form-label">{% trans "Confirmation" %}</label>{{ form.password2 }}</div>
+    </div>
+    {% for field in form %}{% if field.errors %}<div class="text-danger small mt-1">{{ field.errors }}</div>{% endif %}{% endfor %}
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <a href="{% url 'accounts:employes_liste' %}" class="btn btn-outline-secondary">{% trans "Annuler" %}</a>
+      <button class="btn btn-primary">{% trans "Créer l'employé" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

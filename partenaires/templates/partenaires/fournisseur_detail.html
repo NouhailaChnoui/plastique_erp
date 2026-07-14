@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{{ fournisseur.nom }}{% endblock %}
+{% block content %}
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total acheté" %}</div><div class="kpi-value">{{ fournisseur.total_achete|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Total payé" %}</div><div class="kpi-value">{{ fournisseur.total_paye|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Reste à payer" %}</div><div class="kpi-value">{{ fournisseur.reste_a_payer|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Nombre d'achats" %}</div><div class="kpi-value">{{ fournisseur.nombre_achats }}</div></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">{% trans "Coordonnées" %}</div>
+  <p class="mb-1"><i class="fa-solid fa-phone me-2 text-secondary"></i>{{ fournisseur.telephone|default:"—" }}</p>
+  <p class="mb-1"><i class="fa-solid fa-location-dot me-2 text-secondary"></i>{{ fournisseur.ville|default:"—" }} {{ fournisseur.adresse }}</p>
+</div>
+
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Date" %}</th><th>{% trans "Matière" %}</th><th>{% trans "Quantité" %}</th><th>{% trans "Montant" %}</th><th>{% trans "Statut" %}</th><th>{% trans "Bon" %}</th><th>{% trans "Facture" %}</th></tr></thead>
+    <tbody>
+      {% for a in achats %}
+      <tr>
+        <td>{{ a.date_achat }}</td>
+        <td>{{ a.materiau }}</td>
+        <td>{{ a.quantite }} Kg</td>
+        <td>{{ a.montant_total|floatformat:2 }} DH</td>
+        <td><span class="badge-statut badge-{{ a.statut_paiement_css }}">{{ a.statut_paiement }}</span></td>
+        <td>{% if a.photo_bon %}<a href="{{ a.photo_bon.url }}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-image"></i></a>{% else %}—{% endif %}</td>
+        <td><a href="{% url 'achats:facture_pdf' a.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-pdf"></i></a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center text-secondary py-4">{% trans "Aucun achat pour ce fournisseur." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{% blocktrans with numero=vente.numero_facture %}Vente {{ numero }}{% endblocktrans %}{% endblock %}
+{% block content %}
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-label">{% trans "Montant total" %}</div><div class="kpi-value">{{ vente.montant_total|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Montant reçu" %}</div><div class="kpi-value">{{ vente.montant_paye|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Reste à recevoir" %}</div><div class="kpi-value">{{ vente.reste_a_recevoir|floatformat:2 }} DH</div></div>
+  <div class="kpi-card"><div class="kpi-label">{% trans "Statut" %}</div><div class="kpi-value"><span class="badge-statut badge-{{ vente.statut_paiement_css }}">{{ vente.statut_paiement }}</span></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="panel h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="panel-title mb-0">{% trans "Détails de la vente" %}</div>
+        <a href="{% url 'ventes:facture_pdf' vente.pk %}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-pdf me-1"></i>Facture PDF</a>
+      </div>
+      <table class="table-erp mb-0">
+        <tr><td class="text-secondary">Client</td><td class="fw-semibold"><a href="{% url 'partenaires:client_detail' vente.client.pk %}">{{ vente.client }}</a></td></tr>
+        <tr><td class="text-secondary">Matière</td><td>{{ vente.materiau }}</td></tr>
+        <tr><td class="text-secondary">Quantité</td><td>{{ vente.quantite }} Kg</td></tr>
+        <tr><td class="text-secondary">Prix unitaire</td><td>{{ vente.prix_unitaire|floatformat:2 }} DH</td></tr>
+        <tr><td class="text-secondary">Date</td><td>{{ vente.date_vente }}</td></tr>
+        <tr><td class="text-secondary">N° bon</td><td>{{ vente.numero_bon }}</td></tr>
+        <tr><td class="text-secondary">N° facture</td><td>{{ vente.numero_facture }}</td></tr>
+        <tr><td class="text-secondary">Observations</td><td>{{ vente.observations|default:"—" }}</td></tr>
+      </table>
+      {% if vente.photo_bon %}
+      <a href="{{ vente.photo_bon.url }}" target="_blank" class="btn btn-outline-primary btn-sm mt-3"><i class="fa-solid fa-image me-1"></i> Voir le bon de pesée</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="panel h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="panel-title mb-0">{% trans "Paiements" %}</div>
+        <a href="{% url 'ventes:paiement_creer' vente.pk %}" class="btn btn-sm btn-primary"><i class="fa-solid fa-plus me-1"></i>{% trans "Ajouter un paiement" %}</a>
+      </div>
+      {% for p in paiements %}
+      <div class="border rounded-3 p-3 mb-2">
+        <div class="d-flex justify-content-between">
+          <span class="fw-semibold">{{ p.get_mode_display }} — {{ p.montant_total|floatformat:2 }} DH</span>
+          <span class="text-secondary small">{{ p.date_paiement }}</span>
+        </div>
+        {% if p.cheques.all %}
+        <ul class="list-unstyled mt-2 mb-0 small">
+          {% for c in p.cheques.all %}
+          <li class="d-flex justify-content-between align-items-center border-top pt-2 mt-2">
+            <span>{% trans "Chèque" %} {{ c.numero }} — {{ c.banque }} — {{ c.montant|floatformat:2 }} DH ({% trans "encaissement" %} {{ c.date_encaissement }})</span>
+            <span class="d-flex align-items-center gap-2">
+              <span class="badge-statut badge-{{ c.statut }}">{{ c.get_statut_display }}</span>
+              <span class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown"><i class="fa-solid fa-ellipsis"></i></button>
+                <span class="dropdown-menu dropdown-menu-end p-1">
+                  {% if c.statut != "encaisse" %}
+                  <form method="post" action="{% url 'ventes:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="encaisse" class="dropdown-item small text-success"><i class="fa-solid fa-check me-1"></i>{% trans "Marquer encaissé" %}</button>
+                  </form>
+                  {% endif %}
+                  {% if c.statut != "attente" %}
+                  <form method="post" action="{% url 'ventes:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="attente" class="dropdown-item small"><i class="fa-solid fa-rotate-left me-1"></i>{% trans "Remettre en attente" %}</button>
+                  </form>
+                  {% endif %}
+                  {% if c.statut != "annule" %}
+                  <form method="post" action="{% url 'ventes:cheque_statut' c.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" name="statut" value="annule" class="dropdown-item small text-danger"><i class="fa-solid fa-ban me-1"></i>{% trans "Annuler le chèque" %}</button>
+                  </form>
+                  {% endif %}
+                </span>
+              </span>
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p class="text-secondary">{% trans "Aucun paiement enregistré pour cette vente." %}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

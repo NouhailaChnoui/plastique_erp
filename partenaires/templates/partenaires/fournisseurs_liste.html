@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% block page_title %}{% trans "Fournisseurs" %}{% endblock %}
+{% block content %}
+<div class="table-toolbar">
+  <form class="d-flex gap-2">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans "Rechercher un fournisseur..." %}">
+    <button class="btn btn-outline-secondary"><i class="fa-solid fa-search"></i></button>
+  </form>
+  <a href="{% url 'partenaires:fournisseur_creer' %}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Nouveau fournisseur</a>
+</div>
+<div class="table-card">
+  <table class="table-erp mb-0">
+    <thead><tr><th>{% trans "Nom" %}</th><th>{% trans "Téléphone" %}</th><th>{% trans "Ville" %}</th><th>{% trans "Nb achats" %}</th><th>{% trans "Total acheté" %}</th><th>{% trans "Payé" %}</th><th>{% trans "Reste à payer" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for f in fournisseurs %}
+      <tr>
+        <td class="fw-semibold"><a href="{% url 'partenaires:fournisseur_detail' f.pk %}">{{ f.nom }}</a></td>
+        <td>{{ f.telephone|default:"—" }}</td>
+        <td>{{ f.ville|default:"—" }}</td>
+        <td>{{ f.nombre_achats }}</td>
+        <td>{{ f.total_achete|floatformat:2 }} DH</td>
+        <td>{{ f.total_paye|floatformat:2 }} DH</td>
+        <td class="{% if f.reste_a_payer > 0 %}text-danger fw-semibold{% endif %}">{{ f.reste_a_payer|floatformat:2 }} DH</td>
+        <td class="text-end"><a href="{% url 'partenaires:fournisseur_modifier' f.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen"></i></a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="text-center text-secondary py-4">{% trans "Aucun fournisseur." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
